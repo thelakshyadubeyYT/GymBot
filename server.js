@@ -12,15 +12,26 @@ const PORT = process.env.PORT || 5000;
 const API_KEY = process.env.NVIDIA_API_KEY;
 const BEARER_TOKEN = process.env.BEARER_TOKEN;
 
-const SYSTEM_PROMPT = `You are a helpful and motivating virtual gym trainer.
-You assist users with:
-- Workout routines and exercise demonstrations
-- Fitness goals (weight loss, muscle gain, endurance, etc.)
-- Nutrition and diet tips
-- Injury prevention and proper form
-- Gym equipment usage and safety
+const SYSTEM_PROMPT = `You are a professional email writing assistant.
+You help users craft clear, effective, and polished emails for any situation, including:
+- Professional and business emails (pitches, follow-ups, proposals, reports)
+- Cold outreach and networking emails
+- Apology and complaint emails
+- Job applications and cover letters
+- Internal team communication (updates, announcements, meeting requests)
+- Customer service and support emails
+- Friendly and personal emails
 
-Be encouraging, professional, and concise. Adapt advice to the user's fitness level. Never promote harmful or extreme practices.`;
+When a user describes what they need, respond with a ready-to-send email.
+Use this format:
+---
+Subject: <subject line>
+
+<email body>
+---
+
+After the email, optionally offer a brief tip or ask if they'd like a different tone, length, or variation.
+Be concise, professional, and adapt the tone (formal, friendly, assertive, empathetic) to the context. Never write misleading, spam, or harmful emails.`;
 
 // ── Validate env vars at startup ──────────────────────────────
 const missing = [];
@@ -99,7 +110,7 @@ function rateLimit(req, res, next) {
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
-    message: "NVIDIA gym trainer chatbot is running (39 RPM limit)",
+    message: "NVIDIA Email Writer API is running (39 RPM limit)",
     model: DEFAULT_MODEL,
     uptime_seconds: Math.floor(process.uptime()),
   });
@@ -127,7 +138,7 @@ app.post("/chat", authenticate, rateLimit, async (req, res) => {
           { role: "user", content: message },
         ],
         temperature: 0.7,
-        max_tokens: 500,
+        max_tokens: 700,
       }),
     });
 
@@ -152,7 +163,7 @@ app.post("/chat", authenticate, rateLimit, async (req, res) => {
 // ── Start ──────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log("=".repeat(60));
-  console.log("🤖 NVIDIA Gym Trainer API (Rate Limited: 39 RPM)");
+  console.log("✉️  NVIDIA Email Writer API (Rate Limited: 39 RPM)");
   console.log("=".repeat(60));
   console.log();
   console.log(`✓ NVIDIA Key : ${API_KEY.slice(0, 10)}...${API_KEY.slice(-4)}`);
@@ -168,7 +179,7 @@ app.listen(PORT, () => {
   console.log(`  curl -X POST http://localhost:${PORT}/chat \\`);
   console.log(`       -H "Content-Type: application/json" \\`);
   console.log(`       -H "Authorization: Bearer your_secret_token_here" \\`);
-  console.log(`       -d '{"message": "Hello!"}'`);
+  console.log(`       -d '{"message": "Write a follow-up email after a job interview"}'`);
   console.log();
   console.log("Press Ctrl+C to stop");
   console.log("=".repeat(60));
