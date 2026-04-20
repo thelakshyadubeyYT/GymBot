@@ -1,7 +1,7 @@
 {
-  "name": "nvidia-gym-trainer-api",
+  "name": "nvidia-email-writer-api",
   "version": "0.0.1",
-  "description": "A gym trainer chatbot API powered by NVIDIA NIM (meta/llama-3.1-8b-instruct)",
+  "description": "A email writer chatbot API powered by NVIDIA NIM (meta/llama-3.1-8b-instruct)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
